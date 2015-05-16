@@ -2,6 +2,7 @@ import ceylon.ast.core {
     BaseType,
     EntryType,
     InModifier,
+    IterableType,
     Node,
     OutModifier,
     ScopedKey,
@@ -47,6 +48,11 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
     shared actual String transformEntryType(EntryType that) {
         value entry = isPlural(that) then "entries" else "entry";
         return "``entry`` from ``that.key.transform(this)`` to ``that.item.transform(this)``";
+    }
+    
+    shared actual String transformIterableType(IterableType that) {
+        value stream = isPlural(that) then "streams" else "stream";
+        return "``stream`` of ``that.variadicType.transform(this)``";
     }
     
     shared actual String transformTupleType(TupleType that) {
