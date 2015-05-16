@@ -67,3 +67,7 @@ shared void arrayType()
 test
 shared void optionalType()
         => do("Integer?", "maybe Integer");
+
+test
+shared void callableType()
+        => do("Integer(Integer,Integer)", "function taking Integer and Integer returning Integer");
