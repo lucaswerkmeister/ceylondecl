@@ -6,13 +6,13 @@ import de.lucaswerkmeister.ceylondecl.core {
     CeylonDecl
 }
 import ceylon.ast.redhat {
-    compileBaseType
+    compileType
 }
 
 void do(String code, String description) {
     assertEquals {
         expected = description;
-        actual = compileBaseType(code)?.transform(CeylonDecl());
+        actual = compileType(code)?.transform(CeylonDecl());
     };
 }
 
