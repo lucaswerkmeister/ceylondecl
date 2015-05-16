@@ -5,6 +5,7 @@ import ceylon.ast.core {
     InModifier,
     IterableType,
     Node,
+    OptionalType,
     OutModifier,
     ScopedKey,
     SequentialType,
@@ -60,6 +61,11 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
     shared actual String transformIterableType(IterableType that) {
         value stream = isPlural(that) then "streams" else "stream";
         return "``stream`` of ``that.variadicType.transform(this)``";
+    }
+    
+    shared actual String transformOptionalType(OptionalType that) {
+        propagatePlural(that, that.definiteType);
+        return "maybe ``that.definiteType.transform(this)``";
     }
     
     shared actual String transformSequentialType(SequentialType that) {
