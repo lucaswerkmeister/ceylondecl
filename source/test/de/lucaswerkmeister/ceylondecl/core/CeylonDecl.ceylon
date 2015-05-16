@@ -59,3 +59,7 @@ shared void iterableType()
 test
 shared void groupedType()
         => do("{<String->Integer>+}", "stream of one or more entries from String to Integer");
+
+test
+shared void arrayType()
+        => do("Boolean[]", "sequence of Booleans");
