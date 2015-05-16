@@ -26,7 +26,7 @@ shared void baseTypeWithArguments()
 
 test
 shared void baseTypeWithVariantArguments()
-        => do("Iterable<in String, out Nothing>", "Iterable of contravariant String, covariant Nothing");
+        => do("Iterable<in String, out Nothing>", "Iterable of contravariant String and covariant Nothing");
 
 test
 shared void entryType()
@@ -38,7 +38,7 @@ shared void emptyTupleType()
 
 test
 shared void tupleType()
-        => do("[Integer,String,Iterable<String>]", "tuple of Integer, String, Iterable of String");
+        => do("[Integer,String,Iterable<String>]", "tuple of Integer, String and Iterable of String");
 
 test
 shared void sequentialType()
