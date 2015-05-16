@@ -19,3 +19,11 @@ void do(String code, String description) {
 test
 shared void baseType()
         => do("String", "String");
+
+test
+shared void baseTypeWithArguments()
+        => do("Iterable<String>", "Iterable of String");
+
+test
+shared void baseTypeWithVariantArguments()
+        => do("Iterable<in String, out Nothing>", "Iterable of contravariant String, covariant Nothing");
