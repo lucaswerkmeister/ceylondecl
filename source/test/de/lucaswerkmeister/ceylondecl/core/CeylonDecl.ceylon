@@ -63,3 +63,7 @@ shared void groupedType()
 test
 shared void arrayType()
         => do("Boolean[]", "sequence of Booleans");
+
+test
+shared void optionalType()
+        => do("Integer?", "maybe Integer");
