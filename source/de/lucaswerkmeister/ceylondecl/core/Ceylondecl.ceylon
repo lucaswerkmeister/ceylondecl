@@ -1,5 +1,6 @@
 import ceylon.ast.core {
     BaseType,
+    CallableType,
     EntryType,
     GroupedType,
     InModifier,
@@ -46,6 +47,11 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
         } else {
             return name;
         }
+    }
+    
+    shared actual String transformCallableType(CallableType that) {
+        value funktion = isPlural(that) then "functions" else "function";
+        return "``funktion`` taking ``that.argumentTypes.transform(this)`` returning ``that.returnType.transform(this)``";
     }
     
     shared actual String transformEntryType(EntryType that) {
