@@ -47,3 +47,7 @@ shared void sequentialType()
 test
 shared void sequenceType()
         => do("[Boolean+]", "tuple of one or more Booleans");
+
+test
+shared void trailingTupleType()
+        => do("[Integer,Integer,Integer*]", "tuple of Integer, Integer and zero or more Integers");
