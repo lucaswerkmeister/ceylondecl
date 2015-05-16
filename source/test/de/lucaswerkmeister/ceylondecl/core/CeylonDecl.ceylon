@@ -51,3 +51,7 @@ shared void sequenceType()
 test
 shared void trailingTupleType()
         => do("[Integer,Integer,Integer*]", "tuple of Integer, Integer and zero or more Integers");
+
+test
+shared void iterableType()
+        => do("{[Integer]*}", "stream of zero or more tuples of Integer");
