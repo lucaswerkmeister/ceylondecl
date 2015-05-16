@@ -39,3 +39,11 @@ shared void emptyTupleType()
 test
 shared void tupleType()
         => do("[Integer,String,Iterable<String>]", "tuple of Integer, String, Iterable of String");
+
+test
+shared void sequentialType()
+        => do("[Boolean*]", "tuple of zero or more Booleans");
+
+test
+shared void sequenceType()
+        => do("[Boolean+]", "tuple of one or more Booleans");
