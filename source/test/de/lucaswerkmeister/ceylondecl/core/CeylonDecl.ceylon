@@ -31,3 +31,11 @@ shared void baseTypeWithVariantArguments()
 test
 shared void entryType()
         => do("String->Integer", "entry from String to Integer");
+
+test
+shared void emptyTupleType()
+        => do("[]", "empty tuple");
+
+test
+shared void tupleType()
+        => do("[Integer,String,Iterable<String>]", "tuple of Integer, String, Iterable of String");
