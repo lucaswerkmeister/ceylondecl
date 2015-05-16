@@ -1,5 +1,6 @@
 import ceylon.ast.core {
     BaseType,
+    EntryType,
     InModifier,
     Node,
     OutModifier,
@@ -20,6 +21,9 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
             return that.nameAndArgs.name.name;
         }
     }
+    
+    shared actual String transformEntryType(EntryType that)
+            => "entry from ``that.key.transform(this)`` to ``that.item.transform(this)``";
     
     shared actual String transformTypeArgument(TypeArgument that) {
         value variance
