@@ -27,3 +27,7 @@ shared void baseTypeWithArguments()
 test
 shared void baseTypeWithVariantArguments()
         => do("Iterable<in String, out Nothing>", "Iterable of contravariant String, covariant Nothing");
+
+test
+shared void entryType()
+        => do("String->Integer", "entry from String to Integer");
