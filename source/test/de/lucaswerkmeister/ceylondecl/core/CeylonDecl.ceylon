@@ -55,3 +55,7 @@ shared void trailingTupleType()
 test
 shared void iterableType()
         => do("{[Integer]*}", "stream of zero or more tuples of Integer");
+
+test
+shared void groupedType()
+        => do("{<String->Integer>+}", "stream of one or more entries from String to Integer");
