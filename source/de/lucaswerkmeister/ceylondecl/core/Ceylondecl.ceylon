@@ -4,8 +4,10 @@ import ceylon.ast.core {
     InModifier,
     Node,
     OutModifier,
+    TupleType,
     TypeArgument,
-    WideningTransformer
+    WideningTransformer,
+    TypeList
 }
 
 shared class CeylonDecl() satisfies WideningTransformer<String> {
@@ -25,6 +27,9 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
     shared actual String transformEntryType(EntryType that)
             => "entry from ``that.key.transform(this)`` to ``that.item.transform(this)``";
     
+    shared actual String transformTupleType(TupleType that)
+            => that.typeList.elements.empty then "empty tuple" else "tuple of ``that.typeList.transform(this)``";
+    
     shared actual String transformTypeArgument(TypeArgument that) {
         value variance
                 = switch (var = that.variance)
@@ -33,4 +38,7 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
             case (is OutModifier) "covariant ";
         return variance + that.type.transform(this);
     }
+    
+    shared actual String transformTypeList(TypeList that)
+            => ", ".join(that.elements*.transform(this));
 }
