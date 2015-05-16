@@ -1,0 +1,14 @@
+# build system
+bin
+/.ceylon/config.old
+
+# IDEs
+.settings
+/.exploded/
+
+/classes
+/modules
+
+# backup files
+*~
+\#*
