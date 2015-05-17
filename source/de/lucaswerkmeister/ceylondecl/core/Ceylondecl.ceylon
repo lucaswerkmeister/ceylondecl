@@ -24,16 +24,6 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
     function isPlural(Node node) => node.get(plural) else false;
     function propagatePlural(Node from, Node to) => if (isPlural(from)) then to.set(plural, true) else null;
     
-    String commas([String+] strings) {
-        StringBuilder sb = StringBuilder();
-        sb.append(strings.first);
-        for (index->string in strings.indexed.rest) {
-            sb.append(index == strings.size-1 then " and " else ", ");
-            sb.append(string);
-        }
-        return sb.string;
-    }
-    
     shared actual String transformNode(Node that) {
         throw Exception("Can’t process this node type");
     }
@@ -42,8 +32,8 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
         value ownName = that.nameAndArgs.name.name;
         value pluralSuffix = ownName.endsWith("s") then "'" else "s";
         value name = ownName + (isPlural(that) then pluralSuffix else "");
-        if (nonempty args = that.nameAndArgs.typeArguments?.typeArguments) {
-            return "``name`` of ``commas(args*.transform(this))``";
+        if (exists args = that.nameAndArgs.typeArguments) {
+            return "``name`` of ``", ".join(args.typeArguments*.transform(this))``";
         } else {
             return name;
         }
@@ -95,10 +85,8 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
         return variance + that.type.transform(this);
     }
     
-    shared actual String transformTypeList(TypeList that) {
-        assert (nonempty elements = that.elements*.transform(this).append(emptyOrSingleton(that.variadic?.transform(this))));
-        return commas(elements);
-    }
+    shared actual String transformTypeList(TypeList that)
+            => ", ".join(that.elements*.transform(this).append(emptyOrSingleton(that.variadic?.transform(this))));
     
     shared actual String transformVariadicType(VariadicType that) {
         value min = that.isNonempty then "one" else "zero";
