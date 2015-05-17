@@ -4,6 +4,7 @@ import ceylon.ast.core {
     EntryType,
     GroupedType,
     InModifier,
+    IntersectionType,
     IterableType,
     Node,
     OptionalType,
@@ -52,6 +53,13 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
     shared actual String transformGroupedType(GroupedType that) {
         propagatePlural(that, that.type);
         return that.type.transform(this);
+    }
+    
+    shared actual String transformIntersectionType(IntersectionType that) {
+        for (type in that.children) {
+            propagatePlural(that, type);
+        }
+        return " and ".join(that.children*.transform(this));
     }
     
     shared actual String transformIterableType(IterableType that) {
