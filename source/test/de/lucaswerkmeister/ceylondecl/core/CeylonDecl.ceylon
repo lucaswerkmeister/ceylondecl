@@ -5,14 +5,24 @@ import ceylon.test {
 import de.lucaswerkmeister.ceylondecl.core {
     CeylonDecl
 }
+import ceylon.ast.core {
+    Node
+}
 import ceylon.ast.redhat {
+    compileDeclaration,
     compileType
 }
 
 void do(String code, String description) {
+    variable Node? node;
+    try {
+        node = compileDeclaration(code);
+    } catch (AssertionError e) {
+        node = compileType(code);
+    }
     assertEquals {
         expected = description;
-        actual = compileType(code)?.transform(CeylonDecl());
+        actual = node?.transform(CeylonDecl());
     };
 }
 
@@ -79,3 +89,11 @@ shared void intersectionType()
 test
 shared void unionType()
         => do("{Integer|Float*}", "stream of zero or more Integers or Floats");
+
+test
+shared void valueDeclaration()
+        => do("String|[Character*] text;", "declare text as String or tuple of zero or more Characters");
+
+test
+shared void valueDefinition()
+        => do("String|[Character*] text = []", "define text as String or tuple of zero or more Characters");
