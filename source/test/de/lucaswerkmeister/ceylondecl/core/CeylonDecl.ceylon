@@ -71,3 +71,7 @@ shared void optionalType()
 test
 shared void callableType()
         => do("Integer(Integer,Integer)", "function taking Integer, Integer returning Integer");
+
+test
+shared void intersectionType()
+        => do("{Persistent&Printable&Identifiable*}", "stream of zero or more Persistents and Printables and Identifiables");
