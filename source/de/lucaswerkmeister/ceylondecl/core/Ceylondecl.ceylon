@@ -1,7 +1,10 @@
 import ceylon.ast.core {
+    AnyFunction,
     AnyValue,
     BaseType,
+    CallableParameter,
     CallableType,
+    DefaultedParameter,
     EntryType,
     GroupedType,
     InModifier,
@@ -10,6 +13,8 @@ import ceylon.ast.core {
     Node,
     OptionalType,
     OutModifier,
+    ParameterReference,
+    Parameters,
     ScopedKey,
     SequentialType,
     TupleType,
@@ -17,6 +22,8 @@ import ceylon.ast.core {
     UnionType,
     WideningTransformer,
     TypeList,
+    ValueParameter,
+    VariadicParameter,
     VariadicType
 }
 
@@ -29,6 +36,11 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
     
     shared actual String transformNode(Node that) {
         throw Exception("Can’t process this node type");
+    }
+    
+    shared actual String transformAnyFunction(AnyFunction that) {
+        value declare = that.definition exists then "define" else "declare";
+        return "``declare`` ``that.name.name`` as function taking ``" then ".join(that.parameterLists*.transform(this))`` returning ``that.type.transform(this)``";
     }
     
     shared actual String transformAnyValue(AnyValue that) {
@@ -47,10 +59,16 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
         }
     }
     
+    shared actual String transformCallableParameter(CallableParameter that)
+            => "function ``that.name.name`` taking ``" then ".join(that.parameterLists*.transform(this))`` returning ``that.type.transform(this)``";
+    
     shared actual String transformCallableType(CallableType that) {
         value funktion = isPlural(that) then "functions" else "function";
         return "``funktion`` taking ``that.argumentTypes.transform(this)`` returning ``that.returnType.transform(this)``";
     }
+    
+    shared actual String transformDefaultedParameter(DefaultedParameter that)
+            => "defaulted ``that.parameter.transform(this)``";
     
     shared actual String transformEntryType(EntryType that) {
         value entry = isPlural(that) then "entries" else "entry";
@@ -78,6 +96,12 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
         propagatePlural(that, that.definiteType);
         return "maybe ``that.definiteType.transform(this)``";
     }
+    
+    shared actual String transformParameterReference(ParameterReference that)
+            => that.name.name;
+    
+    shared actual String transformParameters(Parameters that)
+            => that.parameters.empty then "no parameters" else ", ".join(that.parameters*.transform(this));
     
     shared actual String transformSequentialType(SequentialType that) {
         value sequence = isPlural(that) then "sequences" else "sequence";
@@ -109,6 +133,12 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
         }
         return " or ".join(that.children*.transform(this));
     }
+    
+    shared actual String transformValueParameter(ValueParameter that)
+            => "``that.type.transform(this)`` ``that.name.name``";
+    
+    shared actual String transformVariadicParameter(VariadicParameter that)
+            => "``that.type.transform(this)`` ``that.name.name``";
     
     shared actual String transformVariadicType(VariadicType that) {
         value min = that.isNonempty then "one" else "zero";
