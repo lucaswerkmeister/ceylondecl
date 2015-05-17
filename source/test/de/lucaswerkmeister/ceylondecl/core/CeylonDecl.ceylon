@@ -97,3 +97,19 @@ shared void valueDeclaration()
 test
 shared void valueDefinition()
         => do("String|[Character*] text = []", "define text as String or tuple of zero or more Characters");
+
+test
+shared void functionDeclaration()
+        => do("String|[Character*] text(Reader r);", "declare text as function taking Reader r returning String or tuple of zero or more Characters");
+
+test
+shared void functionDefinition()
+        => do("String|[Character*] text(Reader r) => []", "define text as function taking Reader r returning String or tuple of zero or more Characters");
+
+test
+shared void multipleParameterLists()
+        => do("Integer weirdSum(Integer s1)()(Integer s2) => s1 + s2", "define weirdSum as function taking Integer s1 then no parameters then Integer s2 returning Integer");
+
+test
+shared void weirdParameters()
+        => do("Null f(Null n(), x, String* s);", "declare f as function taking function n taking no parameters returning Null, x, zero or more Strings s returning Null");
