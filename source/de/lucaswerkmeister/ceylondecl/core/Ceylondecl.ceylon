@@ -1,4 +1,5 @@
 import ceylon.ast.core {
+    AnyValue,
     BaseType,
     CallableType,
     EntryType,
@@ -28,6 +29,11 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
     
     shared actual String transformNode(Node that) {
         throw Exception("Can’t process this node type");
+    }
+    
+    shared actual String transformAnyValue(AnyValue that) {
+        value declare = that.definition exists then "define" else "declare";
+        return "``declare`` ``that.name.name`` as ``that.type.transform(this)``";
     }
     
     shared actual String transformBaseType(BaseType that) {
