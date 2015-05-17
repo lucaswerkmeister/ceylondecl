@@ -75,3 +75,7 @@ shared void callableType()
 test
 shared void intersectionType()
         => do("{Persistent&Printable&Identifiable*}", "stream of zero or more Persistents and Printables and Identifiables");
+
+test
+shared void unionType()
+        => do("{Integer|Float*}", "stream of zero or more Integers or Floats");
