@@ -13,6 +13,7 @@ import ceylon.ast.core {
     SequentialType,
     TupleType,
     TypeArgument,
+    UnionType,
     WideningTransformer,
     TypeList,
     VariadicType
@@ -95,6 +96,13 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
     
     shared actual String transformTypeList(TypeList that)
             => ", ".join(that.elements*.transform(this).append(emptyOrSingleton(that.variadic?.transform(this))));
+    
+    shared actual String transformUnionType(UnionType that) {
+        for (type in that.children) {
+            propagatePlural(that, type);
+        }
+        return " or ".join(that.children*.transform(this));
+    }
     
     shared actual String transformVariadicType(VariadicType that) {
         value min = that.isNonempty then "one" else "zero";
