@@ -5,7 +5,9 @@ import ceylon.ast.core {
     CallableParameter,
     CallableType,
     DefaultedParameter,
+    DynamicModifier,
     EntryType,
+    FunctionModifier,
     GroupedType,
     InModifier,
     IntersectionType,
@@ -21,10 +23,12 @@ import ceylon.ast.core {
     TypeArgument,
     UnionType,
     WideningTransformer,
+    Type,
     TypeList,
     ValueParameter,
     VariadicParameter,
-    VariadicType
+    VariadicType,
+    VoidModifier
 }
 
 shared class CeylonDecl() satisfies WideningTransformer<String> {
@@ -34,13 +38,15 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
     function isPlural(Node node) => node.get(plural) else false;
     function propagatePlural(Node from, Node to) => if (isPlural(from)) then to.set(plural, true) else null;
     
+    function returning(Type|FunctionModifier|DynamicModifier|VoidModifier type) => if (is Type type) then " returning ``type.transform(this)``" else "";
+    
     shared actual String transformNode(Node that) {
         throw Exception("Can’t process this node type");
     }
     
     shared actual String transformAnyFunction(AnyFunction that) {
         value declare = that.definition exists then "define" else "declare";
-        return "``declare`` ``that.name.name`` as function taking ``" then ".join(that.parameterLists*.transform(this))`` returning ``that.type.transform(this)``";
+        return "``declare`` ``that.name.name`` as function taking ``" then ".join(that.parameterLists*.transform(this))````returning(that.type)``";
     }
     
     shared actual String transformAnyValue(AnyValue that) {
@@ -60,11 +66,11 @@ shared class CeylonDecl() satisfies WideningTransformer<String> {
     }
     
     shared actual String transformCallableParameter(CallableParameter that)
-            => "function ``that.name.name`` taking ``" then ".join(that.parameterLists*.transform(this))`` returning ``that.type.transform(this)``";
+            => "function ``that.name.name`` taking ``" then ".join(that.parameterLists*.transform(this))````returning(that.type)``";
     
     shared actual String transformCallableType(CallableType that) {
         value funktion = isPlural(that) then "functions" else "function";
-        return "``funktion`` taking ``that.argumentTypes.transform(this)`` returning ``that.returnType.transform(this)``";
+        return "``funktion`` taking ``that.argumentTypes.transform(this)````returning(that.returnType)``";
     }
     
     shared actual String transformDefaultedParameter(DefaultedParameter that)
