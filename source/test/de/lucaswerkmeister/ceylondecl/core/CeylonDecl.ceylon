@@ -10,7 +10,8 @@ import ceylon.ast.core {
 }
 import ceylon.ast.redhat {
     compileDeclaration,
-    compileType
+    compileType,
+    compileCallableParameter
 }
 
 void do(String code, String description) {
@@ -113,3 +114,7 @@ shared void multipleParameterLists()
 test
 shared void weirdParameters()
         => do("Null f(Null n(), x, String* s);", "declare f as function taking function n taking no parameters returning Null, x, zero or more Strings s returning Null");
+
+test
+shared void nonTypeReturns()
+        => do("dynamic d(void v()) => v();", "define d as function taking function v taking no parameters");
